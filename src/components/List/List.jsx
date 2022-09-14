@@ -1,16 +1,22 @@
 import React from "react";
+import classNames from 'classname';
+
+import Badge from "../Badge/Badge";
 import './List.scss';
 
-const List = ({ items }) => {
+const List = ({ items, className, onClick }) => {
     return (
-        <ul className="list">
+        // onClick is received from add-list-btn and responsible for open/close popup
+        <ul onClick={onClick} className="list">
             {
-            items.map(item => (
-                <li className={item.active && "active"}>
+            items.map((item, index) => (
+                // receives className as props, and assigns active one if true
+                <li key={index} className={classNames(className, {'active': item.active})}>
+                    {/* displays appropriate icon/color-badge near list name */}
                     {
                     item.icon ? 
                     (<i><img src={item.icon} alt="List icon"/></i>) : 
-                    (<i className={`badge badge--${item.color}`}></i>)
+                    (<Badge color={item.color} />)
                     }
                     <span>{item.name}</span>
                 </li>

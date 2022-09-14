@@ -17,23 +17,10 @@
         i {
             margin-right: 8px;
         }
-        
+
         .badge {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
             position: relative;
             left: 2px;
-
-            &--green {
-                background-color: green;
-            }
-            &--blue {
-                background-color: skyblue;
-            }
-            &--pink {
-                background-color: pink;
-            }
         }
     }
 }
