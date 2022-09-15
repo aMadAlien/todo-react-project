@@ -6,23 +6,43 @@ import AddList from "../../assets/img/add-list.svg";
 import CloseList from "../../assets/img/close.svg";
 import Badge from "../Badge/Badge";
 
-const AddListButton = ({ colors }) => {
+const AddListButton = ({ colors, onAdd }) => {
     // open/close the popup by setting the opposite value (true/false)
     const [visiblePopup, setVisiblePopup] = useState(false);
     // select color for list by clicking one
     const [selectedColor, setSelectedColor] = useState(colors[0].id);
+    const [inputValue, setInputValue] = useState("");
+    
+    // close popup, clear input value and reset color badge 
+    const onClose = () => {
+        setVisiblePopup(false);
+        setInputValue("");
+        setSelectedColor(colors[0].id);
+    }
+
+    const addList = () => {
+        // if there isn't any value (list name)
+        if (!inputValue) {
+            alert("put list name")
+        }
+
+        // return object list to create new todo-list
+        const color = colors.filter(color => color.id === selectedColor)[0].hex;
+        onAdd({id: Math.random(), name: inputValue, colorId: selectedColor, color});
+        onClose();
+    }
 
     return (
         <Fragment>
             {/* btn to add new list */}
             <List
                 onClick={() => setVisiblePopup(!visiblePopup)}
-                className="add-list__btn"
                 items={[
                     {
                     icon: AddList,
                     name: "Додати список",
-                    active: false
+                    active: false,
+                    className: "add-list__btn"
                     },
                 ]} 
             />
@@ -30,9 +50,14 @@ const AddListButton = ({ colors }) => {
             {visiblePopup && (
             <div className="add-list__popup">
                 {/* close list btn */}
-                <i onClick={() => setVisiblePopup(!visiblePopup)} className="add-list__close-btn"><img src={CloseList} alt="List icon"/></i>
+                <i onClick={onClose} className="add-list__close-btn"><img src={CloseList} alt="List icon"/></i>
                 {/* input for list name */}
-                <input className="add-list__list-name" type="text" placeholder="Назва списку" />
+                <input 
+                value={inputValue}
+                onChange={e => setInputValue(e.target.value)}
+                className="add-list__list-name" 
+                placeholder="Назва списку" 
+                type="text" />
                 {/* list of colors */}
                 <div className="add-list__popup-colors">
                 {
@@ -48,7 +73,7 @@ const AddListButton = ({ colors }) => {
                 }
                 </div>
                 {/* add list btn */}
-                <button className="button add-list__add-btn">Додати</button>
+                <button onClick={() => addList()} className="button add-list__add-btn">Додати</button>
             </div>
             )}
         </Fragment>

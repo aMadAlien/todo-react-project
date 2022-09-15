@@ -6,7 +6,6 @@
   font-family: 'Roboto', -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  box-sizing: border-box;
 }
 
 i{
@@ -48,7 +47,7 @@ i{
   &__sidebar {
     background-color: #f4f6f8;
     width: 200px;
-    height: 100%;
+    height: calc(100% - 120px);
     border-right: 1px solid #f1f1f1;
     padding: 60px 20px;
   }

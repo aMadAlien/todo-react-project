@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classname";
 
 import './Badge.scss';
 
@@ -9,9 +10,8 @@ const Badge = ({ color, onClick, className }) => {
     const styles = { 
         backgroundColor: color,
     };
-    
     return (
-        <i onClick={onClick} className={`badge ${className}`} style={styles}></i>
+        <i onClick={onClick} className={classNames("badge", className)} style={styles}></i>
     )
 };
 
