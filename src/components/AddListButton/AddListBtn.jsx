@@ -1,17 +1,29 @@
 import React, { Fragment, useState } from "react";
+import axios from 'axios';
 
 import "./AddListBtn.scss";
 import List from "../List/List";
 import AddList from "../../assets/img/add-list.svg";
 import CloseList from "../../assets/img/close.svg";
 import Badge from "../Badge/Badge";
+import { useEffect } from "react";
 
 const AddListButton = ({ colors, onAdd }) => {
     // open/close the popup by setting the opposite value (true/false)
     const [visiblePopup, setVisiblePopup] = useState(false);
     // select color for list by clicking one
-    const [selectedColor, setSelectedColor] = useState(colors[0].id);
+    const [selectedColor, setSelectedColor] = useState(3);
+    // change value in input (list name)
     const [inputValue, setInputValue] = useState("");
+    // loading after click add-btn
+    const [isLoading, setIsLoading] = useState(false);
+
+    // check if colors array exists and if colors are changed and set selected-color in color-list
+    useEffect(() => {
+        if (Array.isArray(colors)) {
+            setSelectedColor(colors[0].id);
+        }
+    }, [colors])
     
     // close popup, clear input value and reset color badge 
     const onClose = () => {
@@ -20,17 +32,32 @@ const AddListButton = ({ colors, onAdd }) => {
         setSelectedColor(colors[0].id);
     }
 
+    // return object list to create new todo-list
     const addList = () => {
         // if there is any value (list name)
-        if (inputValue) {
-            // return object list to create new todo-list
-            const color = colors.filter(color => color.id === selectedColor)[0].hex;
-            onAdd({id: Math.random(), name: inputValue, colorId: selectedColor, color});
-            onClose();
-        } else {
+        if (!inputValue) {
             alert("put list name");
+            return;
         }
-
+        setIsLoading(true);
+        axios
+        // put new list into lists DB with values: name and colorId
+        .post( 'http://localhost:3001/lists', {
+            name: inputValue,
+            colorId: selectedColor,
+        })
+        .then(({data}) => {
+            // return color hex
+            const color = colors.filter(color => color.id === selectedColor)[0].hex;
+            // create new object with new data (color list by hex)
+            const listObject = { ...data, color: { hex: color } };
+            // return new object to App.js where list-state is
+            onAdd(listObject);
+            onClose();
+        }).finally(() => {
+            // stop loading in the end
+            setIsLoading(false);
+        });
     }
 
     return (
@@ -74,7 +101,10 @@ const AddListButton = ({ colors, onAdd }) => {
                 }
                 </div>
                 {/* add list btn */}
-                <button onClick={() => addList()} className="button add-list__add-btn">Додати</button>
+                <button onClick={() => addList()} className="button add-list__add-btn">
+                    {/* check if new list is creating after click add-btn */}
+                    {isLoading ? "Створення..." : "Додати"}
+                </button>
             </div>
             )}
         </Fragment>
