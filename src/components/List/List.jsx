@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from 'classname';
+import axios from 'axios';
 
 import RemoveList from '../../assets/img/remove.svg';
 import Badge from "../Badge/Badge";
@@ -7,11 +8,13 @@ import './List.scss';
 
 const List = ({ items, isRemovable, onClick, onRemove }) => {
     // remove tofo-list
-    const removeList = (obj) => {
+    const removeList = (list) => {
         // ask if user actually wanna remove list
         if (window.confirm("Дійсно бажаєте видалити?")){
-            // return object list to remove
-            onRemove(obj);
+            axios.delete('http://localhost:3001/lists/' + list.id).then(() => {
+                // return list-id to remove
+                onRemove(list.id);
+            })
         }
     }
 

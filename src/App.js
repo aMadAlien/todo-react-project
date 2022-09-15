@@ -44,7 +44,11 @@ function App() {
         {lists ? (
           <List 
           items = {lists}
-          onRemove={(obj) => console.log(obj)}
+          // return new object without deleted list
+          onRemove={(id) => {
+            const newLists = lists.filter(list => list.id !== id);
+            setList(newLists);
+          }}
           isRemovable />
         ) : (
           'Завантаження...'
