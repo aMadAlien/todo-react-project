@@ -21,15 +21,16 @@ const AddListButton = ({ colors, onAdd }) => {
     }
 
     const addList = () => {
-        // if there isn't any value (list name)
-        if (!inputValue) {
-            alert("put list name")
+        // if there is any value (list name)
+        if (inputValue) {
+            // return object list to create new todo-list
+            const color = colors.filter(color => color.id === selectedColor)[0].hex;
+            onAdd({id: Math.random(), name: inputValue, colorId: selectedColor, color});
+            onClose();
+        } else {
+            alert("put list name");
         }
 
-        // return object list to create new todo-list
-        const color = colors.filter(color => color.id === selectedColor)[0].hex;
-        onAdd({id: Math.random(), name: inputValue, colorId: selectedColor, color});
-        onClose();
     }
 
     return (

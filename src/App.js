@@ -4,6 +4,7 @@ import ListSvg from './assets/img/list.svg';
 import AddListButton from './components/AddListButton/AddListBtn';
 import DB from './assets/bd.json';
 import List from './components/List/List';
+import Tasks from './components/Tasks/Tasks';
 
 function App() {
   // assigns array of todo-lists from DB to list state
@@ -43,7 +44,11 @@ function App() {
         {/* onnAdd receives new list-object and creates new todo-list */}
         <AddListButton onAdd={onAddList} colors={DB.colors} />
       </div>
-      {/* <div className="todo__tasks">завдання</div> */}
+      
+      {/* main window that displays all tasks of a list */}
+      <div className="todo__tasks">
+        <Tasks />
+      </div>
     </div>
   );
 }
