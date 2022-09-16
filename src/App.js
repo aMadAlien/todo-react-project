@@ -54,6 +54,28 @@ function App() {
     setList(newList);
   };
 
+  const onRemoveTask = (listId, taskId) => {
+    if (window.confirm('Дійсно бажаєте видалити завдання?')) {
+      // return new list of tasks without selected one (removed)
+      const newList = lists.map(item => {
+        // work with tasks from appropriate list
+        if (item.id === listId) {
+          // return tasks id of which doesn't match id of selected task
+          item.tasks = item.tasks.filter(task => task.id !== taskId);
+        }
+        return item;
+      });
+
+      setList(newList);
+
+      // delete a task from DB by its id
+      axios.delete('http://localhost:3001/tasks/' + taskId)
+      .catch(() => {
+        alert("Не вдалося видалити завдання");
+      })
+    }
+  };
+
   const OneList = () => {
     return (
       <div>
@@ -61,6 +83,7 @@ function App() {
             <Tasks 
               list={activeItem}
               onAddTask={onAddTask}
+              onRemoveTask={onRemoveTask}
               onEditTitle={onEditListTitle}
             />
           )}

@@ -3,11 +3,11 @@ import axios from "axios";
 
 import './Tasks.scss';
 import EditTitle from '../../assets/img/edit.svg';
-import CheckItem from '../../assets/img/check.svg';
+import Task from "./Task";
 import AddTaskForm from "./AddTaskForm";
 
 // ! onAddTask must be changed to context
-const Tasks = ({ list, onEditTitle, onAddTask, empty }) => {
+const Tasks = ({ list, onEditTitle, onAddTask, empty, onRemoveTask }) => {
 
     const editTitle = () => {
         // window with input to enter new title
@@ -40,21 +40,18 @@ const Tasks = ({ list, onEditTitle, onAddTask, empty }) => {
 
             <div className="tasks__items">
                 {list.tasks.map(item => (
-                    <div key={item.id} className="tasks__item">
-                        {/* checkbox */}
-                        <div className="checkbox">
-                            {/* {`task--${item.id}`} => make chackbox work correctly */}
-                            <input type="checkbox" id={`task--${item.id}`} />
-                            <label htmlFor={`task--${item.id}`}><i><img src={CheckItem} alt="check" /></i></label>
-                        </div>
-                        {/* task */}
-                        <input readOnly value={item.text} type="text" />
-                    </div>
+                    // block of tasks (containes: checkbox, task-text, funcs (remove/edit task))
+                    <Task
+                        key={item.id}
+                        list={list}
+                        onRemove={onRemoveTask}
+                        {...item}
+                    />
                 ))}
-
-                {/* btn (form) to add a new task into list */}
-                <AddTaskForm list={list} onAddTask={onAddTask} />
             </div>
+
+            {/* btn (form) to add a new task into list */}
+            <AddTaskForm list={list} onAddTask={onAddTask} />
         </div>
     )
 }
