@@ -76,6 +76,44 @@ function App() {
     }
   };
 
+  const onEditTask = (listId, taskObj) => {
+    // popup with input to edit task-text
+    const editedTask = window.prompt("Нова назва:", taskObj.text);
+
+    // check if input-value isn't empty
+    if (!editedTask) {
+      return;
+    }
+
+    // return list with an edited task-text
+    const newList = lists.map(list => {
+      // look for appropriate list
+      if (listId === list.id) {
+        // return tasks, one of which is edited
+        list.tasks = list.tasks.map(task => {
+          // look for appropriate task by id
+          if (task.id === taskObj.id) {
+            // assign new text from popup to appropriate task
+            task.text = editedTask;
+          }
+          return task;
+        });
+      }
+      return list;
+    });
+
+    setList(newList);
+
+    // change task-text in DB
+    axios
+    .patch('http://localhost:3001/tasks/' + taskObj.id, {
+      text: editedTask
+    })
+    .catch(() => {
+      alert("Не вдалося змінити назву завдання");
+    });
+  };
+
   const OneList = () => {
     return (
       <div>
@@ -83,6 +121,7 @@ function App() {
             <Tasks 
               list={activeItem}
               onAddTask={onAddTask}
+              onEditTask={onEditTask}
               onRemoveTask={onRemoveTask}
               onEditTitle={onEditListTitle}
             />
@@ -101,6 +140,8 @@ function App() {
             list={list}
             onAddTask={onAddTask}
             onEditTitle={onEditListTitle}
+            onRemoveTask={onRemoveTask}
+            onEditTask={onEditTask}
             empty={false}
           />
       ))}

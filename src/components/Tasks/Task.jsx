@@ -15,10 +15,10 @@ const Task = ({ id, text, list, onRemove, onEdit }) => {
             </div>
 
             {/* task text */}
-            <input readOnly value={text} type="text" />
+            <p>{text}</p>
 
             {/* btn to edit/remove task */}
-            <i><img src={EditTask} alt="edit" /></i>
+            <i onClick={() => onEdit(list.id, { id, text })}><img src={EditTask} alt="edit" /></i>
             <i onClick={() => onRemove(list.id, id)}><img src={RemoveTask} alt="edit" /></i>
         </div>
     )

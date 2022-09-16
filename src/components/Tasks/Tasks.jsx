@@ -7,7 +7,7 @@ import Task from "./Task";
 import AddTaskForm from "./AddTaskForm";
 
 // ! onAddTask must be changed to context
-const Tasks = ({ list, onEditTitle, onAddTask, empty, onRemoveTask }) => {
+const Tasks = ({ list, onEditTitle, onAddTask, empty, onRemoveTask, onEditTask }) => {
 
     const editTitle = () => {
         // window with input to enter new title
@@ -44,6 +44,7 @@ const Tasks = ({ list, onEditTitle, onAddTask, empty, onRemoveTask }) => {
                     <Task
                         key={item.id}
                         list={list}
+                        onEdit={onEditTask}
                         onRemove={onRemoveTask}
                         {...item}
                     />
