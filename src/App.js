@@ -24,7 +24,19 @@ function App() {
   const onAddList = obj => {
     const newList = [...lists, obj];
     setList(newList);
-  }
+  };
+
+  const onEditListTitle = (id, title) => {
+    // receive new title returned from Tasks.jsx
+    const newList = lists.map(item => {
+      if (item.id === id) {
+        item.name = title;
+      }
+      return item;
+    });
+    // set new list title
+    setList(newList);
+  } 
 
   return (
     <div className="todo">
@@ -68,7 +80,12 @@ function App() {
       {/* main window that displays all tasks of a list */}
       {/* firstly check if todo-lists exist and then render them */}
       <div className="todo__tasks">
-        {lists && activeItem && (<Tasks list={activeItem} />)}
+        {lists && activeItem && (
+          <Tasks 
+            list={activeItem}
+            onEditTitle={onEditListTitle}
+          />
+        )}
       </div>
     </div>
   );

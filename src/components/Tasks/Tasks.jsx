@@ -1,17 +1,37 @@
 import React from "react";
+import axios from "axios";
 
 import './Tasks.scss';
 import EditTitle from '../../assets/img/edit.svg';
 import CheckItem from '../../assets/img/check.svg';
 
-const Tasks = ({ list }) => {
+const Tasks = ({ list, onEditTitle }) => {
+
+    const editTitle = () => {
+        // window with input to enter new title
+        const newTitle = window.prompt("Назва списку", list.name)
+        
+        if (newTitle) {
+            onEditTitle(list.id, newTitle);
+            // change new list title in DB
+            axios.patch('http://localhost:3001/lists/' + list.id, {
+                name: newTitle
+            })
+            .catch(() => {
+                alert("Помилка оновлення назви списку");
+            })
+        }
+    };
+
     return (
         <div className="tasks">
             <h2 className="tasks__title">
                 {list.name}
                 {/* icon-btn to edit a title */}
-                <i className="tasks__edit-title"><img src={EditTitle} alt="edit" /></i>
+                {/* onClick gives capability to change list title */}
+                <i onClick={editTitle} className="tasks__edit-title"><img src={EditTitle} alt="edit" /></i>
             </h2>
+
             {!list.tasks.length && <h2 className="tasks__no-tasks">Немає завдань</h2>}
 
             <div className="tasks__items">
