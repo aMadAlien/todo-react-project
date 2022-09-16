@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import "./AddListBtn.scss";
 import List from "../List/List";
-import AddList from "../../assets/img/add-list.svg";
+import AddList from "../../assets/img/add.svg";
 import CloseList from "../../assets/img/close.svg";
 import Badge from "../Badge/Badge";
 import { useEffect } from "react";
@@ -54,7 +54,12 @@ const AddListButton = ({ colors, onAdd }) => {
             // return new object to App.js where list-state is
             onAdd(listObject);
             onClose();
-        }).finally(() => {
+        })
+        // catch error while adding a list
+        .catch(() => {
+            alert("Помилка при дадованні списку!");
+        })
+        .finally(() => {
             // stop loading in the end
             setIsLoading(false);
         });
@@ -83,7 +88,7 @@ const AddListButton = ({ colors, onAdd }) => {
                 <input 
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
-                className="add-list__list-name" 
+                className="field" 
                 placeholder="Назва списку" 
                 type="text" />
                 {/* list of colors */}

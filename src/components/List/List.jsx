@@ -26,7 +26,12 @@ const List = ({ items, isRemovable, onClick, onRemove, onClickItem, activeItem }
                 // receives className, and assigns active one if true
                 <li
                     key={index}
-                    className={classNames(item.className, {'active': activeItem && activeItem.id === item.id})}
+                    // if item.active select "all tasks", otherwise one of lists
+                    className={classNames(item.className, {
+                        'active': item.active 
+                            ? item.active 
+                            : activeItem && activeItem.id === item.id
+                        })}
                     // return clicked list object to open list in main-window
                     onClick={onClickItem ? () => onClickItem(item) : null}
                 >

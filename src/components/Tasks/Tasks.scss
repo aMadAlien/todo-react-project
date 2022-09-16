@@ -94,4 +94,33 @@
             }
         }
     }
+
+    &__form-new {
+        display: flex;
+        align-items: center;
+        margin-left: 4px;
+        opacity: 0.4;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.8;
+        }
+
+        img {
+            width: 18px;
+            height: 18px;
+        }
+        
+        span {
+            font-size: 16px;
+            margin-left: 18px;
+        }
+    }
+
+    &__form-block {
+        .button {
+            margin-right: 10px;
+            margin-top: 15px;
+        }
+    }
 }

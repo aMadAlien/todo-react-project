@@ -4,8 +4,10 @@ import axios from "axios";
 import './Tasks.scss';
 import EditTitle from '../../assets/img/edit.svg';
 import CheckItem from '../../assets/img/check.svg';
+import AddTaskForm from "./AddTaskForm";
 
-const Tasks = ({ list, onEditTitle }) => {
+// ! onAddTask must be changed to context
+const Tasks = ({ list, onEditTitle, onAddTask }) => {
 
     const editTitle = () => {
         // window with input to enter new title
@@ -47,6 +49,9 @@ const Tasks = ({ list, onEditTitle }) => {
                         <input readOnly value={item.text} type="text" />
                     </div>
                 ))}
+
+                {/* btn (form) to add a new task into list */}
+                <AddTaskForm list={list} onAddTask={onAddTask} />
             </div>
         </div>
     )

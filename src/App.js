@@ -26,6 +26,19 @@ function App() {
     setList(newList);
   };
 
+  const onAddTask = (listId, taskObj) => {
+    // receive task-object from AddTaskForm.jsx
+    const newTask = lists.map(list => {
+      // look for appropriate list and add new task-object
+      if (list.id === listId) {
+        list.tasks = [...list.tasks, taskObj];
+      }
+      return list;
+    });
+    // set new task
+    setList(newTask);
+  };
+
   const onEditListTitle = (id, title) => {
     // receive new title returned from Tasks.jsx
     const newList = lists.map(item => {
@@ -79,10 +92,12 @@ function App() {
       
       {/* main window that displays all tasks of a list */}
       {/* firstly check if todo-lists exist and then render them */}
+      {/* has capability to create new task in list */}
       <div className="todo__tasks">
         {lists && activeItem && (
           <Tasks 
             list={activeItem}
+            onAddTask={onAddTask}
             onEditTitle={onEditListTitle}
           />
         )}
