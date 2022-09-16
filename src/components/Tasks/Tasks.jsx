@@ -7,7 +7,7 @@ import CheckItem from '../../assets/img/check.svg';
 import AddTaskForm from "./AddTaskForm";
 
 // ! onAddTask must be changed to context
-const Tasks = ({ list, onEditTitle, onAddTask }) => {
+const Tasks = ({ list, onEditTitle, onAddTask, empty }) => {
 
     const editTitle = () => {
         // window with input to enter new title
@@ -27,14 +27,16 @@ const Tasks = ({ list, onEditTitle, onAddTask }) => {
 
     return (
         <div className="tasks">
-            <h2 className="tasks__title">
+            {/* title is the same color as selected list-badge */}
+            <h2 className="tasks__title" style={{color: list.color.hex}}>
                 {list.name}
                 {/* icon-btn to edit a title */}
                 {/* onClick gives capability to change list title */}
                 <i onClick={editTitle} className="tasks__edit-title"><img src={EditTitle} alt="edit" /></i>
             </h2>
 
-            {!list.tasks.length && <h2 className="tasks__no-tasks">Немає завдань</h2>}
+            {/* check if list empty */}
+            {empty && !list.tasks.length && <h2 className="tasks__no-tasks">Немає завдань</h2>}
 
             <div className="tasks__items">
                 {list.tasks.map(item => (

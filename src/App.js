@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router';
 import axios from 'axios';
 
 import ListSvg from './assets/img/list.svg';
-import DB from './assets/db.json';
 
 import { List, AddListButton, Tasks } from './components';
 
@@ -10,6 +11,8 @@ function App() {
   const [lists, setList] = useState(null);
   const [colors, setColors] = useState(null);
   const [activeItem, setActiveItem] = useState(null);
+  let navigate = useNavigate();
+  let location = useLocation();
 
   // receive data (lists and colors objects) when app renders (one time)
   useEffect(() => {
@@ -49,20 +52,66 @@ function App() {
     });
     // set new list title
     setList(newList);
-  } 
+  };
+
+  const OneList = () => {
+    return (
+      <div>
+          {lists && activeItem && (
+            <Tasks 
+              list={activeItem}
+              onAddTask={onAddTask}
+              onEditTitle={onEditListTitle}
+            />
+          )}
+      </div>
+    )
+  };
+
+  const AllLists = () => {
+    return (
+      <div>
+      {lists &&
+        lists.map(list => (
+          <Tasks 
+            key={list.id}
+            list={list}
+            onAddTask={onAddTask}
+            onEditTitle={onEditListTitle}
+            empty={false}
+          />
+      ))}
+      </div>
+    )
+  }
+
+  // open appropriate list of tasks in main-window
+  useEffect(() => {
+    // location.pathname receives path (list/[id]) from useLocation
+    const listId = location.pathname.split('lists/')[1];
+    if (lists) {
+      // arround all lists look for one with the same id as the path
+      const list = lists.find(list => list.id === Number(listId));
+      // make found list active and open its tasks
+      setActiveItem(list);
+    }
+  }, [location.pathname])
 
   return (
     <div className="todo">
       <div className="todo__sidebar">
         {/* displays sidebar of lists of todos */}
         {/* active == true when the list is selected */}
-        <List items={[
-          {
-            icon: ListSvg,
-            name: "Всі завдання",
-            active: true,
-          }
-        ]}/>
+        <List
+          onClick={list => {navigate("/")}}
+          items={[
+            {
+              icon: ListSvg,
+              name: "Всі завдання",
+              active: true,
+            }
+          ]}
+        />
         {/* check if lists exist into DB and render them */}
         {/* isRemovable - only for todo-lists */}
         {/* items contains array of todo-lists */}
@@ -77,7 +126,7 @@ function App() {
           }}
           // activeItem opens a list with tasks in main-window
           onClickItem={item => {
-            setActiveItem(item);
+            navigate(`/lists/${item.id}`);
           }}
           activeItem={activeItem}
           isRemovable />
@@ -94,13 +143,12 @@ function App() {
       {/* firstly check if todo-lists exist and then render them */}
       {/* has capability to create new task in list */}
       <div className="todo__tasks">
-        {lists && activeItem && (
-          <Tasks 
-            list={activeItem}
-            onAddTask={onAddTask}
-            onEditTitle={onEditListTitle}
-          />
-        )}
+        <Routes>
+          {/* display all lists of tasks in main-window */}
+          <Route path='/' element={<AllLists />} ></Route>
+          {/* display separaye list of tasks in main-window */}
+          <Route path="/lists/:id" element={<OneList />} ></Route>
+        </Routes>
       </div>
     </div>
   );
