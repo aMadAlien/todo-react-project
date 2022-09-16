@@ -6,7 +6,7 @@ import RemoveList from '../../assets/img/remove.svg';
 import Badge from "../Badge/Badge";
 import './List.scss';
 
-const List = ({ items, isRemovable, onClick, onRemove }) => {
+const List = ({ items, isRemovable, onClick, onRemove, onClickItem, activeItem }) => {
     // remove tofo-list
     const removeList = (list) => {
         // ask if user actually wanna remove list
@@ -24,7 +24,12 @@ const List = ({ items, isRemovable, onClick, onRemove }) => {
             {
             items.map((item, index) => (
                 // receives className, and assigns active one if true
-                <li key={index} className={classNames(item.className, {'active': item.active})}>
+                <li
+                    key={index}
+                    className={classNames(item.className, {'active': activeItem && activeItem.id === item.id})}
+                    // return clicked list object to open list in main-window
+                    onClick={onClickItem ? () => onClickItem(item) : null}
+                >
 
                     {/* displays appropriate icon/color-badge near list name */}
                     {
@@ -33,7 +38,11 @@ const List = ({ items, isRemovable, onClick, onRemove }) => {
                     (<Badge color={item.color.hex} />)
                     }
 
-                    <span>{item.name}</span>
+                    {/* display lists length */}
+                    <span>
+                        {item.name}
+                        {item.tasks && ` (${item.tasks.length})`}
+                    </span>
 
                     {/* cheack if it is todo-list and display remove-btn */}
                     {

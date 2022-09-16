@@ -9,6 +9,7 @@ import { List, AddListButton, Tasks } from './components';
 function App() {
   const [lists, setList] = useState(null);
   const [colors, setColors] = useState(null);
+  const [activeItem, setActiveItem] = useState(null);
 
   // receive data (lists and colors objects) when app renders (one time)
   useEffect(() => {
@@ -49,6 +50,11 @@ function App() {
             const newLists = lists.filter(list => list.id !== id);
             setList(newLists);
           }}
+          // activeItem opens a list with tasks in main-window
+          onClickItem={item => {
+            setActiveItem(item);
+          }}
+          activeItem={activeItem}
           isRemovable />
         ) : (
           'Завантаження...'
@@ -62,7 +68,7 @@ function App() {
       {/* main window that displays all tasks of a list */}
       {/* firstly check if todo-lists exist and then render them */}
       <div className="todo__tasks">
-        {lists && (<Tasks list={lists[1]} />)}
+        {lists && activeItem && (<Tasks list={activeItem} />)}
       </div>
     </div>
   );

@@ -25,6 +25,18 @@
         }
     }
 
+    &__no-tasks {
+        font-family: 'Montserrat';
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 39px;
+        color: #C9D1D3;
+
+        position: absolute;
+        top: 50%;
+        left: 55%;
+    }
+
     &__items {
         padding-top: 30px;
     }

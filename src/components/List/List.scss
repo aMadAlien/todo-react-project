@@ -43,6 +43,12 @@
 
         span {
             flex: 1;
+
+            // ellipsis if there is more text
+            text-overflow: ellipsis;
+            overflow: hidden;
+            width: 160px;
+            white-space: nowrap;
         }
     }
 }

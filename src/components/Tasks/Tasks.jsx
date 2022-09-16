@@ -12,6 +12,7 @@ const Tasks = ({ list }) => {
                 {/* icon-btn to edit a title */}
                 <i className="tasks__edit-title"><img src={EditTitle} alt="edit" /></i>
             </h2>
+            {!list.tasks.length && <h2 className="tasks__no-tasks">Немає завдань</h2>}
 
             <div className="tasks__items">
                 {list.tasks.map(item => (
